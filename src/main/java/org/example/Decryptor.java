@@ -17,13 +17,19 @@ public class Decryptor {
 
     public void decrypt(byte[] message) throws Exception {
         // TODO: implement decryption
-        Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        byte[] decryptedData = cipher.doFinal(message);
+        new Thread(() -> {
+            try {
+                Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+                cipher.init(Cipher.DECRYPT_MODE, key);
+                byte[] decryptedData = cipher.doFinal(message);
 
-        // Retrieved message
-        Message decryptedMsg = deserializeMsg(decryptedData);
-        processor.process(decryptedMsg);
+                // Retrieved message
+                Message decryptedMsg = deserializeMsg(decryptedData);
+                processor.process(decryptedMsg);
+            } catch (Exception e) {
+                System.err.println("Exception in decrypt(byte[] message)!");
+            }
+        }).start();
     }
 
     private Message deserializeMsg(byte[] data) {
