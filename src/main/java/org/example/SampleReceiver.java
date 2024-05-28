@@ -32,7 +32,11 @@ public class SampleReceiver implements Receiver {
         Message message = new Message(1, 1, msgBytes);
 
         // Encrypt to showcase decryption and preserve message
-        byte[] encryptedMsg = encryptor.encrypt(message);
-        decryptor.decrypt(encryptedMsg);
+        try {
+            byte[] encryptedMsg = encryptor.encrypt(message);
+            decryptor.decrypt(encryptedMsg);
+        } catch (Exception e) {
+            System.err.println("Error in SampleReceiver decryption!");
+        }
     }
 }
